@@ -1,0 +1,67 @@
+version: 1
+
+views:
+  - name: TasksPage
+    route: /objects/tasks
+    url: http://localhost:3001/objects/tasks
+    source: packages/twenty-front/src/pages/object-record/RecordIndexPage.tsx
+    description: Tasks list; same record index shell as other objects but grouped by status by default
+
+  - name: RecordIndexPage
+    route: /objects/*
+    url: http://localhost:3001/objects/companies
+    source: packages/twenty-front/src/pages/object-record/RecordIndexPage.tsx
+    description: Object list page (table or kanban) for any object type, e.g. companies, people, opportunities
+    memory:
+      - The URL carries a viewId query param identifying the saved view; route matching ignores it
+      - Table rows render lazily; row count in DOM may be lower than the total shown in the view picker button
+    components:
+      - name: RecordTableRow
+        selector: '[data-testid^="row-id-"]'
+        source: packages/twenty-front/src/modules/object-record/record-table/record-table-row/components/RecordTableDraggableTr.tsx
+        properties:
+          - name: label
+            extract: '[data-testid="chip"] div:nth-of-type(2)'
+        children:
+          - name: RecordNameChip
+            selector: 'a[data-click-outside-id="link-chip-click-outside-id"]'
+            description: Record name link chip (clicking the row background only selects the row)
+            memory:
+              - Clicking a name chip opens a side-panel PREVIEW, not the record page; to reach the full record page click the Open button at the bottom of the side panel (or Ctrl+Enter)
+              - Each visible row renders two identical chips (display + hover overlay); occurrence #0 is covered, click occurrence #1
+            properties:
+              - name: label
+                extract: 'div:nth-of-type(2)'
+              - name: href
+                extract: attr=href
+          - name: RecordCell
+            selector: '[data-testid="editable-cell-display-mode"]'
+            source: packages/twenty-front/src/modules/object-record/record-table/record-table-cell/components/RecordTableCellDisplayContainer.tsx
+            properties:
+              - name: value
+                extract: text
+          - name: RowCheckbox
+            selector: '[data-testid="input-checkbox"]'
+      - name: RecordTable
+        selector: '.record-index-container-gater-for-drag-select'
+        description: The record table container including header cells and all rows
+        children:
+          - name: ColumnHeaderCell
+            selector: '.header-cell'
+            properties:
+              - name: label
+                extract: text
+      - name: PageHeaderSidePanelButton
+        selector: '[data-testid="page-header-side-panel-button"]'
+      - name: ViewBar
+        selector: '[data-component="TopBar"]'
+        source: packages/twenty-front/src/modules/views/components/ViewBar.tsx
+        description: Top bar with the view picker (left) and Filter / Sort / Options controls (right)
+        memory:
+          - Filter, Sort and Options are plain text buttons with hashed CSS classes; the data-component="TopBar" hook was added to source because no stable selector existed
+        children:
+          - name: ViewPickerButton
+            selector: 'button'
+            properties:
+              - name: label
+                extract: text

@@ -1,0 +1,30 @@
+version: 1
+
+components:
+  - name: NavigationDrawer
+    selector: '[data-click-outside-id="navigation-drawer"]'
+    source: packages/twenty-front/src/modules/ui/navigation/navigation-drawer/components/NavigationDrawer.tsx
+    description: Left sidebar with workspace switcher, search, settings and object navigation
+    children:
+      - name: WorkspaceDropdown
+        selector: '[data-testid="workspace-dropdown"]'
+        properties:
+          - name: workspace
+            extract: text
+      - name: NavItem
+        selector: 'a'
+        properties:
+          - name: label
+            extract: text
+
+  - name: SidePanel
+    selector: '[data-click-outside-id="side-panel"]'
+    description: Right-hand record side panel (command menu surface)
+
+  - name: PageActionContainer
+    selector: '[data-click-outside-id="page-action-container"]'
+    description: Top bar action container with page title and actions
+
+  - name: ToastAnnouncer
+    selector: 'body > div[role="status"]'
+    description: Empty aria-live status regions used by the toast system; not user-actionable

@@ -1,0 +1,48 @@
+version: 1
+
+views:
+  - name: RecordShowPage
+    route: /object/*/*
+    url: http://localhost:3001/object/company/20202020-a305-41e7-8c72-ba44072a4c58
+    source: packages/twenty-front/src/pages/object-record/RecordShowPage.tsx
+    description: Full-page record detail with fields panel, relation widgets and timeline
+    memory:
+      - Clicking a record chip anywhere in the app opens a side-panel preview, not this page; the Open button (or Ctrl+Enter) in the side panel navigates here
+      - Widget containers use data-testid values that are page-layout widget UUIDs from the workspace database; they differ per workspace and after a reseed
+    components:
+      - name: TopBarTitle
+        selector: '[data-testid="top-bar-title"]'
+        properties:
+          - name: title
+            extract: text
+      - name: RecordFieldsWidget
+        selector: '[data-testid="record-fields-widget"]'
+        description: Left panel listing all record fields grouped in sections
+        children:
+          - name: FieldChip
+            selector: '[data-testid="chip"]'
+            properties:
+              - name: label
+                extract: text
+          - name: SeeAllLink
+            selector: '[data-testid="widget-see-all-link"]'
+      - name: PeopleRelationWidget
+        selector: '[data-testid="956b37fb-a8e2-4679-a543-18e06a644107"]'
+        stability: unstable
+        description: Related people list widget
+      - name: OpportunitiesRelationWidget
+        selector: '[data-testid="f2d81c33-cb13-4ffd-8a9a-3358ed08918d"]'
+        stability: unstable
+        description: Related opportunities list widget
+      - name: TimelineWidget
+        selector: '[data-testid="226a0a16-51ea-4590-b19f-c8f34c925ddd"]'
+        stability: unstable
+        description: Activity timeline (emails, events, changes) grouped by month
+      - name: RecordTabBar
+        selector: '[data-testid^="tab-"]'
+        description: Tabs for Home / Timeline / Tasks etc. Tab testids are tab-<uuid>, uuid varies per workspace
+        properties:
+          - name: label
+            extract: text
+      - name: ExpandButton
+        selector: '[data-testid="expand-button"]'

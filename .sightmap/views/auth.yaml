@@ -1,0 +1,24 @@
+version: 1
+
+views:
+  - name: SignInUp
+    route: /welcome
+    url: http://localhost:3001/welcome
+    source: packages/twenty-front/src/pages/auth/SignInUp.tsx
+    description: Email/password sign-in with SSO options
+    memory:
+      - Email and password fields come prefilled with dev seed credentials (tim@apple.dev); flow is Continue -> password appears -> Sign in
+      - Sign-in redirects to /objects/companies with a viewId query param
+    components:
+      - name: SignInForm
+        selector: 'form'
+        children:
+          - name: EmailInput
+            selector: 'input[type="email"], input[autocomplete="email"]'
+          - name: PasswordInput
+            selector: 'input[type="password"]'
+          - name: SubmitButton
+            selector: 'button[type="submit"], button'
+            properties:
+              - name: label
+                extract: text

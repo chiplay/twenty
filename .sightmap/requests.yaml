@@ -1,0 +1,19 @@
+version: 1
+
+requests:
+  - name: CoreGraphQL
+    route: /graphql
+    method: POST
+    source: packages/twenty-server/src/engine/api/graphql
+    description: Single GraphQL endpoint for all record data; operation name distinguishes queries (FindManyCompanies, CombinedFindManyRecords, ...)
+    memory:
+      - All record CRUD goes through this one endpoint; filter by operationName in the request body, not by URL
+  - name: MetadataGraphQL
+    route: /metadata
+    method: POST
+    source: packages/twenty-server/src/engine/api/graphql/graphql-config
+    description: GraphQL endpoint for object/field metadata (schema of the workspace)
+  - name: AuthTokenExchange
+    route: /auth/token
+    method: POST
+    description: Refresh-token exchange; runs on app load and periodically

@@ -49,7 +49,7 @@ export const TopBar = ({
   rightComponent,
   bottomComponent,
 }: TopBarProps) => (
-  <StyledContainer className={className}>
+  <StyledContainer className={className} data-component="TopBar">
     <StyledTopBar>
       <StyledLeftSection>{leftComponent}</StyledLeftSection>
       <StyledRightSection>{rightComponent}</StyledRightSection>

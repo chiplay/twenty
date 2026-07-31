@@ -1,0 +1,12 @@
+version: 1
+
+views:
+  - name: SettingsPage
+    route: /settings/**
+    url: http://localhost:3001/settings/profile
+    source: packages/twenty-front/src/pages/settings/SettingsProfile.tsx
+    description: Settings area; left drawer switches to settings navigation, content pane varies by section
+    stability: stub
+    memory:
+      - The navigation drawer swaps to a settings menu inside the same [data-click-outside-id="navigation-drawer"] container; Exit Settings returns to the app
+      - The settings content pane has no landmark elements, testids or stable classes (Linaria hashed only); it cannot be mapped without adding data-component hooks to source
